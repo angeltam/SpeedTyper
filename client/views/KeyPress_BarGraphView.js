@@ -94,8 +94,9 @@ var KeyPress_BarGraphView = Backbone.View.extend({
       .style('border', '5px solid black')
       .style('border-radius', '.5em')
       .style('margin-top', '20px')
-      .style('width', '50%')
-      .style('margin-left', '25%')
+      .style('width', '75%')
+      .style('height', '60vh')
+      .style('margin-left', '12.5%')
       // Append title
       .append('h2')
       .text('Keyboard Accuracy Graph');
