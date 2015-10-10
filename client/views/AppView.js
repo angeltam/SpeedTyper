@@ -99,7 +99,6 @@ var AppView = Backbone.View.extend({
 
     this.listenTo(this.gameView, 'correctWord', this.updatePlayerScore);
     this.startTime = Date.now();
-    http://www.killerinstinctonline.net/sound/announcer/attract/Ready1.wav
     this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Ready1.wav" autoplay></audio>');
   },
   updatePlayerScore: function () {
