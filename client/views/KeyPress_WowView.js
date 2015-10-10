@@ -20,14 +20,13 @@ var KeyPress_WowView = Backbone.View.extend({
     ];
     // Wow compliments
     this.wowCompliments = [
-      'Good', 'Great', 'Grand', 'Brehhh', 'Bro', 'Dude',
-      'Dudebro', 'Bropocalypse', 'Spell-Tastrophe',
-      'Kiss My ASCII'
+      'Exquisite', 'Scrumptious', 'Grand', 'Brehhh', 'Bro',
+      'Dude', 'Dudebrohh', 'Spell-Tastrophe', 'Kiss My ASCII'
     ];
     this.wowInsults = [
-      'Uhm...', 'Huh?', 'Awful', 'Lame',
-      'WPM = WrongPerMinute', 'Fatal Error: You\'re bad',
-      'Do you even type?'
+      'GoBack_2_AppAcademy', 'Syntax error: Missing Skill',
+      'Fatal Error: You\'re bad',
+      'PHPlease', 'expect(you).to.have\n.property(\'skill\')'
     ];
 
     // Add listeners
@@ -46,7 +45,10 @@ var KeyPress_WowView = Backbone.View.extend({
     var that = this;
     this.model.on('updateOneKeyPress', function (key, bool) {
       // Animate an individual bar
-      that.animateOneWow(key, bool);
+      if (key === ' ' && bool
+        || !bool) {
+        that.animateOneWow(key, bool);
+      }
     });
   },
 
@@ -72,18 +74,12 @@ var KeyPress_WowView = Backbone.View.extend({
         return d.replace('#', '');
       })
       .style('height', '100%')
-      .style('width', '20%')
+      .style('width', '15%')
       .style('float', function (d, i) {
         if (i === 1) {
           return 'right';
         }
         return 'left';
-      })
-      .style('background-color', function (d, i) {
-        if (i === 1) {
-          return 'rgba(0, 255, 0, .1)';
-        }
-        return 'rgba(0, 0, 255, .1)';
       });
   },
 
@@ -121,7 +117,7 @@ var KeyPress_WowView = Backbone.View.extend({
       .append('p')
       .text(str)
       .style('font-size', function () {
-        return Math.floor(10 + Math.random() * 25) + 'px';
+        return Math.floor(16 + Math.random() * 8) + 'px';
       })
       .style('color', function () {
         if (!compliment) {
@@ -132,49 +128,34 @@ var KeyPress_WowView = Backbone.View.extend({
       .style('opacity', '0')
       .style('position', 'relative')
       .style('left', function () {
-        return 10 + Math.random() * 80 + '%';
+        return 10 + Math.random() * 30 + '%';
       })
       .style('top', function () {
-        return 10 + Math.random() * 80 + '%';
-      })
-      .transition()
-      .duration(500)
-      .style('opacity', '1')
-      .style('transform', function () {
-        return 'rotatez('
-          + Math.floor(180 * Math.random() - 1)
-          + 'deg)';
-      })
-      .style('-ms-transform', function () {
-        return 'rotatez('
-          + Math.floor(180 * Math.random() - 1)
-          + 'deg)';
-      })
-      .style('-webkist-transform', function () {
-        return 'rotatez('
-          + Math.floor(180 * Math.random() - 1)
-          + 'deg)';
+        return 10 + Math.random() * 40 + '%';
       })
       .transition()
       .duration(250)
-      .transition()
-      .duration(500)
-      .style('opacity', '0')
+      .style('opacity', '1')
       .style('transform', function () {
-        return 'rotatex('
-          + Math.floor(720 * Math.random() - 1)
+        return 'rotatez('
+          + Math.floor(90 * (Math.random() - .5))
           + 'deg)';
       })
       .style('-ms-transform', function () {
-        return 'rotatex('
-          + Math.floor(720 * Math.random() - 1)
+        return 'rotatez('
+          + Math.floor(90 * (Math.random() - .5))
           + 'deg)';
       })
       .style('-webkist-transform', function () {
-        return 'rotatex('
-          + Math.floor(720 * Math.random() - 1)
+        return 'rotatez('
+          + Math.floor(90 * (Math.random() - .5))
           + 'deg)';
       })
+      .transition()
+      .duration(2000)
+      .transition()
+      .duration(250)
+      .style('opacity', '0')
       .each('end', function () {
         d3.select(this)
           .remove();
