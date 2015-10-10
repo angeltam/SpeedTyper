@@ -6,7 +6,13 @@ var SpeedTyperView = Backbone.View.extend({
   
   tagName: "div",
   id: "textContainer",
-
+  audioSrcs: ['http://www.killerinstinctonline.net/sound/announcer/master.mp3',
+    'http://www.killerinstinctonline.net/sound/announcer/ultra.mp3',
+    'http://www.killerinstinctonline.net/sound/announcer/killer.mp3',
+    'http://www.killerinstinctonline.net/sound/announcer/monster.mp3',
+    'http://www.killerinstinctonline.net/sound/announcer/king.mp3',
+    'http://www.killerinstinctonline.net/sound/announcer/attract/ShowNoMercy.wav'
+    ],
   initialize: function ( params ) {
     this.keyModel = params.keyModel;
     window.animatingScroll = false;
@@ -115,6 +121,8 @@ var SpeedTyperView = Backbone.View.extend({
     this.$('#input_bar').focus();
   },
   setNextWord: function (word) {
+    var soundbite = _.sample(this.audioSrcs);
+    $('#appContainer').append('<audio src="' + soundbite + '" autoplay></audio>');
     $('#warning').removeClass().addClass('hide');
     console.log('next');
     this.stopListening();

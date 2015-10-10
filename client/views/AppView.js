@@ -99,6 +99,7 @@ var AppView = Backbone.View.extend({
 
     this.listenTo(this.gameView, 'correctWord', this.updatePlayerScore);
     this.startTime = Date.now();
+    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Ready1.wav" autoplay></audio>');
   },
   updatePlayerScore: function () {
     console.log('updateScore')
@@ -136,7 +137,7 @@ var AppView = Backbone.View.extend({
 
     $('body').css({opacity: 0});
     $('body').animate({opacity: 1});
-
+    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Winner.wav" autoplay></audio>');
     }).bind(this));
   },
   gameLose: function () {
@@ -167,6 +168,7 @@ var AppView = Backbone.View.extend({
 
     $('body').css({opacity: 0});
     $('body').animate({opacity: 1});
+    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Humiliation.wav" autoplay></audio>');
     }).bind(this));
   },
   newGame: function () {
