@@ -126,6 +126,8 @@ var AppView = Backbone.View.extend({
     $('#keyboard').remove();
     this.keyboard.remove();
     this.gameView.remove();
+    $('#wowview').remove();
+    this.wowview.remove();
 
     this.$el.append($('<h1>You Win!</h1>').addClass('end'));
     this.graph = new KeyPress_BarGraphView({model: this.keyPressModel, domID:'#bargraph'});
@@ -157,6 +159,8 @@ var AppView = Backbone.View.extend({
     $('#keyboard').remove();
     this.keyboard.remove();
     this.gameView.remove();
+    $('#wowview').remove();
+    this.wowview.remove();
 
     this.$el.append($('<h1>You Lose</h1>').addClass('end'));
     this.graph = new KeyPress_BarGraphView({model: this.keyPressModel, domID:'#bargraph'});
