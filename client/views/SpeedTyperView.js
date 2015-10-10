@@ -50,6 +50,8 @@ var SpeedTyperView = Backbone.View.extend({
     this.lineNum =0;
     this.animating = false;
     this.top = 0;
+    this.combo = 0;
+    this.audioplaying = false;
     $('#input_bar').on('keydown', this.keyDownEventHandler.bind(this) );
     $('#input_bar').focus();
   },
@@ -106,6 +108,7 @@ var SpeedTyperView = Backbone.View.extend({
       currentCharModel.set('correct', false);
       currentCharModel.set('dirty', true);
       this.keyModel.updateOneKeyPress(currChar, false);
+      this.combo = 0;
     }
     if (this.currentCharIdx === this.allChars.length-1) { return; }
     this.currentCharIdx++;
@@ -121,9 +124,21 @@ var SpeedTyperView = Backbone.View.extend({
     this.$('#input_bar').focus();
   },
   setNextWord: function (word) {
-    var soundbite = _.sample(this.audioSrcs);
-    $('#appContainer').append('<audio src="' + soundbite + '" autoplay></audio>');
+    this.combo++;
+    var that = this;
     $('#warning').removeClass().addClass('hide');
+    if(this.combo > 1 && !this.audioplaying) {
+      this.audioplaying = true;
+
+      var soundbite = _.sample(this.audioSrcs);
+      var $audio = $('<audio src="' + soundbite + '" autoplay></audio>');
+      $('#appContainer').append($audio);
+
+      var that = this;
+      $audio.on('ended', function (){
+        that.audioplaying = false;
+      });
+    }
     console.log('next');
     this.stopListening();
     this.currentWordIdx++;
