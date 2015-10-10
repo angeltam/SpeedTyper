@@ -142,17 +142,17 @@ var KeyPress_WowView = Backbone.View.extend({
       .style('opacity', '1')
       .style('transform', function () {
         return 'rotatez('
-          + Math.floor(180 * Math.random() - 1))
+          + Math.floor(180 * Math.random() - 1)
           + 'deg)';
       })
       .style('-ms-transform', function () {
         return 'rotatez('
-          + Math.floor(180 * Math.random() - 1))
+          + Math.floor(180 * Math.random() - 1)
           + 'deg)';
       })
       .style('-webkist-transform', function () {
         return 'rotatez('
-          + Math.floor(180 * Math.random() - 1))
+          + Math.floor(180 * Math.random() - 1)
           + 'deg)';
       })
       .transition()
@@ -162,17 +162,17 @@ var KeyPress_WowView = Backbone.View.extend({
       .style('opacity', '0')
       .style('transform', function () {
         return 'rotatex('
-          + Math.floor(720 * Math.random() - 1))
+          + Math.floor(720 * Math.random() - 1)
           + 'deg)';
       })
       .style('-ms-transform', function () {
         return 'rotatex('
-          + Math.floor(720 * Math.random() - 1))
+          + Math.floor(720 * Math.random() - 1)
           + 'deg)';
       })
       .style('-webkist-transform', function () {
         return 'rotatex('
-          + Math.floor(720 * Math.random() - 1))
+          + Math.floor(720 * Math.random() - 1)
           + 'deg)';
       })
       .each('end', function () {
