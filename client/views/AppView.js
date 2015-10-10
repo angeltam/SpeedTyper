@@ -96,7 +96,10 @@ var AppView = Backbone.View.extend({
 
     //var graph = new KeyPress_BarGraphView({model: this.keyPressModel, domID:'#bargraph'});
     this.keyboard = new KeyboardView({model: this.keyPressModel});
-
+    this.wowview = new KeyPress_WowView({
+      model: this.keyPressModel,
+      domID: '#wowview'
+    });
     this.listenTo(this.gameView, 'correctWord', this.updatePlayerScore);
     this.startTime = Date.now();
     this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Ready1.wav" autoplay></audio>');

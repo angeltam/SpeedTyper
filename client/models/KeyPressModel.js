@@ -122,7 +122,8 @@ var KeyPressModel = Backbone.Model.extend({
         ++keyPressData[keyAsChar].badPresses;
       }
       // Update an individual bar here
-      this.trigger('updateOneKeyPress', keyAsChar);
+      this.trigger('updateOneKeyPress',
+        keyAsChar, isGoodPress);
     }
   },
 
