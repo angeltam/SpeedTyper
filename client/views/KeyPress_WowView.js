@@ -18,6 +18,13 @@ var KeyPress_WowView = Backbone.View.extend({
       '#WowView_Left',
       '#WowView_Right'
     ];
+    // Wow compliments
+    this.wowCompliments = [
+      'Good', 'Great', 'Grand'
+    ];
+    this.wowInsults = [
+      'Uhm...', 'Huh?', 'Awful'
+    ];
 
     // Add listeners
     this.initializeListeners();
@@ -33,9 +40,9 @@ var KeyPress_WowView = Backbone.View.extend({
   initializeListeners: function () {
     // On a keypress change, animate the data
     var that = this;
-    this.model.on('updateOneKeyPress', function (key) {
+    this.model.on('updateOneKeyPress', function (key, bool) {
       // Animate an individual bar
-      that.animateWow(key);
+      that.animateOneWow(key, bool);
     });
   },
 
@@ -45,128 +52,98 @@ var KeyPress_WowView = Backbone.View.extend({
     d3.select('body')
       .append(this.tagName)
       .attr('id', this.domID.replace('#', ''))
-      .style('color', 'red')
-      .style('background-color', 'rgba: (255, 0, 0, .5)')
-      .style('margin-top', '20vh')
+      .style('position', 'absolute')
+      .style('top', '0')
+      .style('margin-top', '25vh')
       .style('width', '100%')
       .style('height', '80vh');
     
-    // // Append scale text
-    // var scaleVars = ['Poor', 'Good'];
-    // d3.select('body ' + this.domID)
-    //   .append('ul')
-    //   .style('list-style-type', 'none')
-    //   .style('margin', '0')
-    //   .style('padding', '0')
-    //   .selectAll('li')
-    //   .data(scaleVars)
-    //   .enter()
-    //   .append('li')
-    //   .attr('class', 'barGraphView_ScaleTitle')
-    //   .text(function (d) {
-    //     return d;
-    //   });
-
-    // // Append gradient scale
-    // d3.select('body ' + this.domID)
-    //   .append('div')
-    //   // Background image gradient
-    //   .style('background-image',
-    //     'linear-gradient(to right, '
-    //       + this.model.get('heatMapColors').badColor.color
-    //       + ', '
-    //       + this.model.get('heatMapColors').goodColor.color
-    //       + ')')
-    //   // Safari
-    //   .style('background-image',
-    //     '-webkit-linear-gradient(left, '
-    //       + this.model.get('heatMapColors').badColor.color
-    //       + ', '
-    //       + this.model.get('heatMapColors').goodColor.color
-    //       + ')')
-    //   // Opera
-    //   .style('background-image',
-    //     '-o-linear-gradient(right, '
-    //       + this.model.get('heatMapColors').badColor.color
-    //       + ', '
-    //       + this.model.get('heatMapColors').goodColor.color
-    //       + ')')
-    //   // Firefox
-    //   .style('background-image',
-    //     '-moz-linear-gradient(right, '
-    //       + this.model.get('heatMapColors').badColor.color
-    //       + ', '
-    //       + this.model.get('heatMapColors').goodColor.color
-    //       + ')')
-    //   // General styling
-    //   .style('width', '25%')
-    //   .style('height', '20px')
-    //   .style('margin', '1% auto')
-    //   .style('border-radius', '5px');
-
-    // // Iterate over graph ids
-    // var graphIDs = this.graphIDs;
-    // for (var i = 0; i < graphIDs.length; ++i) {
-    //   // Select parent in DOM
-    //   d3.select('body ' + this.domID)
-    //     // Add div
-    //     .append('div')
-    //     // Add class
-    //     .attr('class', 'barGraphView_Graph')
-    //     // Add id
-    //     .attr('id', graphIDs[i].replace('#', ''));
-    //   // Add bottom margin to last element
-    //   if(i === graphIDs.length - 1) {
-    //     d3.select('body ' + graphIDs[i])
-    //       .style('margin-bottom', '2%');
-    //   }
-    // }
+    // Append two divs corresponding to wowAreas
+    d3.select('body ' + this.domID)
+      .selectAll('div')
+      .data(this.wowIDs)
+      .enter()
+      .append('div')
+      .attr('id', function (d) {
+        return d.replace('#', '');
+      })
+      .style('height', '100%')
+      .style('width', '20%')
+      .style('float', function (d, i) {
+        if (i === 1) {
+          return 'right';
+        }
+        return 'left';
+      })
+      .style('background-color', function (d, i) {
+        if (i === 1) {
+          return 'rgba(0, 255, 0, .1)';
+        }
+        return 'rgba(0, 0, 255, .1)';
+      });
   },
 
   // Animate an individual wow
-  animateOneWow: function (key) {
+  animateOneWow: function (key, bool) {
     // This binding
     var that = this;
 
     // Get keyPressData
     var keyPressData = this.model.get('keyPressData');
 
-    // Height of containing div
-    var containerHeight = Number(d3
-      .selectAll(this.graphIDs[0])
-      .style('height').replace('px', ''));
+    // Get random wowDiv index
+    var wowID = this.wowIDs[Math.floor(Math.random()
+      * this.wowIDs.length)];
 
-    // Bar DOM id
-    var barID = '#barGraphView_Graph_BarID_'
-      + key.charCodeAt(0);
+    // Get a text array
+    var textArr;
+    var compliment = true;
+    // Compliment
+    if (bool) {
+      textArr = this.wowCompliments;
+    } else {
+      // Insult
+      textArr = this.wowInsults;
+      compliment = false;
+    }
 
-    // Animate the bar
-    d3.select('body ' + barID)
-      // Transition
-      .transition()
-      .duration(100)
-      // Calculate height based off of occurence
-      .style('height', function () {
-        var totalPresses = keyPressData[key].goodPresses
-          + keyPressData[key].badPresses;
-        var barHeight
-          = (keyPressData[key].goodPresses/totalPresses * .6 + .3)
-            * containerHeight;
-        return barHeight + 'px';
+    // Get a random element
+    var str = textArr[Math.floor(Math.random()
+      * textArr.length)];
+    console.log(str);
+    console.log('body');
+    // Add element to DOM
+    d3.selectAll('body ' + this.domID + ' ' + wowID)
+      .append('p')
+      .text(str)
+      .style('font-size', function () {
+        return Math.floor(10 + Math.random() * 25) + 'px';
       })
-      // Calculate color based on heat mapping
-      .style('background-color', function () {
-        // Get all presses
-        var totalPresses = keyPressData[key].badPresses
-          + keyPressData[key].goodPresses;
-        // Avoid division by 0
-        if (!totalPresses) {
-          return that.model.get('heatMapColors').goodColor.color;
+      .style('color', function () {
+        if (!compliment) {
+          return 'red';
         }
-        // Get bad press ratio mapping
-        var badPressRatio
-          = keyPressData[key].badPresses / totalPresses;
-        return that.model.interpretToColor_Dynamic(badPressRatio);
+        return 'green'
+      })
+      .style('opacity', '0')
+      .style('position', 'relative')
+      .style('left', function () {
+        return 10 + Math.random() * 80 + '%';
+      })
+      .style('top', function () {
+        return 10 + Math.random() * 80 + '%';
+      })
+      .transition()
+      .duration(500)
+      .style('opacity', '1')
+      .transition()
+      .duration(250)
+      .transition()
+      .duration(500)
+      .style('opacity', '0')
+      .each('end', function () {
+        d3.select(this)
+          .remove();
       });
   }
 });
