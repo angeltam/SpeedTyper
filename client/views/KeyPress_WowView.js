@@ -20,10 +20,14 @@ var KeyPress_WowView = Backbone.View.extend({
     ];
     // Wow compliments
     this.wowCompliments = [
-      'Good', 'Great', 'Grand'
+      'Good', 'Great', 'Grand', 'Brehhh', 'Bro', 'Dude',
+      'Dudebro', 'Bropocalypse', 'Spell-Tastrophe',
+      'Kiss My ASCII'
     ];
     this.wowInsults = [
-      'Uhm...', 'Huh?', 'Awful'
+      'Uhm...', 'Huh?', 'Awful', 'Lame',
+      'WPM = WrongPerMinute', 'Fatal Error: You\'re bad',
+      'Do you even type?'
     ];
 
     // Add listeners
@@ -136,11 +140,41 @@ var KeyPress_WowView = Backbone.View.extend({
       .transition()
       .duration(500)
       .style('opacity', '1')
+      .style('transform', function () {
+        return 'rotatez('
+          + Math.floor(180 * Math.random() - 1))
+          + 'deg)';
+      })
+      .style('-ms-transform', function () {
+        return 'rotatez('
+          + Math.floor(180 * Math.random() - 1))
+          + 'deg)';
+      })
+      .style('-webkist-transform', function () {
+        return 'rotatez('
+          + Math.floor(180 * Math.random() - 1))
+          + 'deg)';
+      })
       .transition()
       .duration(250)
       .transition()
       .duration(500)
       .style('opacity', '0')
+      .style('transform', function () {
+        return 'rotatex('
+          + Math.floor(720 * Math.random() - 1))
+          + 'deg)';
+      })
+      .style('-ms-transform', function () {
+        return 'rotatex('
+          + Math.floor(720 * Math.random() - 1))
+          + 'deg)';
+      })
+      .style('-webkist-transform', function () {
+        return 'rotatex('
+          + Math.floor(720 * Math.random() - 1))
+          + 'deg)';
+      })
       .each('end', function () {
         d3.select(this)
           .remove();
