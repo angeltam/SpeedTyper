@@ -8,9 +8,6 @@ var AppView = Backbone.View.extend({
     * a connect handler on it.
     */
     this.socket =  io.connect();
-    this.socket.on('connect', function () {
-      console.log('Connected!');
-    })
 
     /*
     * Add event listeners for the socket object. The handlers:
@@ -45,15 +42,18 @@ var AppView = Backbone.View.extend({
   renderJoinScreen: function () {
     this.$el.empty();
     this.$el.append($('<h1>Speed Typer</h1>').addClass('title'));
+   
     var $findbtn = $('<button>Find Game</button>').addClass('btn');
     this.$el.append($findbtn);
-
     $findbtn.click(this.joinGame.bind(this));
 
     var $joinPrivatebtn = $('<button>Private Game</button>').addClass('btn');
     this.$el.append($joinPrivatebtn);
-
     $joinPrivatebtn.click(this.joinPrivateGame.bind(this));
+
+    var $playSolobtn = $('<button>Play Solo</button>').addClass('btn');
+    this.$el.append($playSolobtn);
+    $playSolobtn.click(this.beginSoloGame.bind(this));
   },
   joinGame: function () {
     $('button').remove();
@@ -87,7 +87,7 @@ var AppView = Backbone.View.extend({
 
     this.$el.append($('<div/>', {class:'player'}).text(this.username) );
     this.$el.append($('<div/>', {class:'opponent'}).text(this.opponentName) );
-    this.game = new GameScreen(window.innerWidth, 100, 40);
+    this.game = new GameScreen(window.innerWidth, 30, 40);
     this.game.initialize();
     this.game.render(0,0);
 
@@ -102,7 +102,6 @@ var AppView = Backbone.View.extend({
     });
     this.listenTo(this.gameView, 'correctWord', this.updatePlayerScore);
     this.startTime = Date.now();
-    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Ready1.wav" autoplay></audio>');
   },
   updatePlayerScore: function () {
     console.log('updateScore')
@@ -135,14 +134,13 @@ var AppView = Backbone.View.extend({
 
     this.$el.append($('<h3>WPM: ' + wpm + '</h3>').addClass('score'));
 
-    var $btn = $('<button>New Game</button>').addClass('end-btn');
+    var $btn = $('<button>New Game</button>').addClass('btn end-btn');
     this.$el.append($btn);
     $btn.click(this.newGame.bind(this));
 
 
     $('body').css({opacity: 0});
     $('body').animate({opacity: 1});
-    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Winner.wav" autoplay></audio>');
     }).bind(this));
   },
   gameLose: function () {
@@ -154,28 +152,26 @@ var AppView = Backbone.View.extend({
     $('#input_bar').off('keydown');
     
     $('body').animate({opacity: 0}, (function () {
+      this.$el.empty();
+      $('#keyboard').remove();
+      this.keyboard.remove();
+      this.gameView.remove();
+      $('#wowview').remove();
+      this.wowview.remove();
 
-    this.$el.empty();
-    $('#keyboard').remove();
-    this.keyboard.remove();
-    this.gameView.remove();
-    $('#wowview').remove();
-    this.wowview.remove();
+      this.$el.append($('<h1>You Lose</h1>').addClass('end'));
+      this.graph = new KeyPress_BarGraphView({model: this.keyPressModel, domID:'#bargraph'});
+      this.graph.reanimateBarGraphs();
 
-    this.$el.append($('<h1>You Lose</h1>').addClass('end'));
-    this.graph = new KeyPress_BarGraphView({model: this.keyPressModel, domID:'#bargraph'});
-    this.graph.reanimateBarGraphs();
+      this.$el.append($('<h3>WPM: ' + wpm + '</h3>').addClass('score'));
 
-    this.$el.append($('<h3>WPM: ' + wpm + '</h3>').addClass('score'));
-
-    var $btn = $('<button>New Game</button>').addClass('end-btn');
-    this.$el.append($btn);
-    $btn.click(this.newGame.bind(this));
+      var $btn = $('<button>New Game</button>').addClass('btn end-btn');
+      this.$el.append($btn);
+      $btn.click(this.newGame.bind(this));
 
 
-    $('body').css({opacity: 0});
-    $('body').animate({opacity: 1});
-    this.$el.append('<audio src="http://www.killerinstinctonline.net/sound/announcer/attract/Humiliation.wav" autoplay></audio>');
+      $('body').css({opacity: 0});
+      $('body').animate({opacity: 1});
     }).bind(this));
   },
   newGame: function () {
@@ -215,5 +211,19 @@ var AppView = Backbone.View.extend({
     this.socket.on('joinPrivateGameDenied', function (data) {
       $message.text(data.message);
     });
-  }
+  },
+  beginSoloGame: function (){
+    $('h3').remove();
+    $('h4').remove();
+    $('h5').remove();
+    $('button').remove();
+    this.$el.append($('<h3>Starting Game</h3>').addClass('subHeading'));
+
+    this.playerScore = 0;
+    this.opponentScore = 0;
+    this.opponentName = '';
+
+    this.keyPressModel = new KeyPressModel;
+    this.fetchText();
+  },
 });

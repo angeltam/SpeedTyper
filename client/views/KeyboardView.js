@@ -64,7 +64,7 @@ var KeyboardView = Backbone.View.extend({
   initialize: function () {
     that = this;
     this.options = _.extend({}, this.defaults, this.options);
-    this.mock = this.initializeMockData();
+    //this.mock = this.initializeMockData();
 
     this.model.on('updateOneKeyPress', function(key) {
       //find ratio first
@@ -83,12 +83,9 @@ var KeyboardView = Backbone.View.extend({
 
   makeKeyboard : function (xml) {
     var library = that.defaults.keyboardPathLibrary;
-    console.log(library);
-
       document.body
       .appendChild(xml.documentElement)
-      .setAttribute("id", "keyboard");
-
+      .setAttribute("id", "keyboard")
       var fill = "#97c5d5";
 
       //I don't need this, but I'm not deleting it until testing is complete.

@@ -19,8 +19,8 @@ GameScreen.prototype.initialize = function () {
 
   svg.selectAll('rect')
     .data([
-      [this.threshold/2, '#C477E2', 0],
-      [this.threshold/2, '#77D7E2', this.threshold/2]
+      [this.threshold/2, 'rgba(0,255,0,0.5)', 0],
+      [this.threshold/2, 'rgba(255,0,0,0.5)', this.threshold/2]
     ])
     .enter()
     .append('rect')
@@ -36,8 +36,9 @@ GameScreen.prototype.render = function (playerScore, oppScore) {
   // var difference = this.player.model.get('numCorrect') - this.opponent.model.get('numCorrect')
   var difference = playerScore - oppScore;
 
-  var playerData = [scale(this.threshold/2 + difference), '#C477E2', 0];
-  var opponentData = [scale(this.threshold - (this.threshold/2 + difference)), '#77D7E2', scale(this.threshold/2 + difference)];
+  var playerData = [scale(this.threshold/2 + difference), 'rgba(0,255,0,0.5)', 0];
+  var opponentData = [scale(this.threshold - (this.threshold/2 + difference)),
+    'rgba(255,0,0,0.5)', scale(this.threshold/2 + difference)];
 
   var data = []
   data.push(playerData);

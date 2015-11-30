@@ -62,7 +62,7 @@ var KeyPress_WowView = Backbone.View.extend({
       .style('top', '0')
       .style('margin-top', '25vh')
       .style('width', '100%')
-      .style('height', '80vh');
+      .style('height', '70vh');
     
     // Append two divs corresponding to wowAreas
     d3.select('body ' + this.domID)

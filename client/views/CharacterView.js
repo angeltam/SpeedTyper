@@ -51,7 +51,7 @@ var CharacterView = Backbone.View.extend({
     this.$el.removeClass();
     if (correct) {
       var type = this.model.get('dirty') ? 'corrected' : 'correct';
-      this.$el.addClass('correct');
+      this.$el.addClass(type);
     } else if (correct === false){
       this.$el.addClass('incorrect');
     } else if (correct === null){
