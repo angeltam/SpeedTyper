@@ -84,14 +84,16 @@ exports.checkForEndGame = function (socketId, opponentId) {
 
   // Get current scores
   var playerScore = exports.users[socketId].score;
-  var opponentScore = exports.users[opponentId].score;
+  var opponentScore = opponentId ? exports.users[opponentId].score : 0;
 
   // If game over, reset data in server's users cache and return winner/loser
   if (Math.abs(playerScore - opponentScore) >= 20) {
     exports.users[socketId].opponent = null;
     exports.users[socketId].score = 0;
-    exports.users[opponentId].opponent = null;
-    exports.users[opponentId].score = 0;
+    if (opponentId) {
+      exports.users[opponentId].opponent = null;
+      exports.users[opponentId].score = 0;
+    }
 
     if (playerScore > opponentScore) {
       return { winner: socketId, loser: opponentId };

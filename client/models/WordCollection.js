@@ -7,7 +7,6 @@ var WordCollection = Backbone.Collection.extend({
     this.listenTo(this, 'add', this.updateListeners);
   },
   checkWordCorrectness: function (lastChar, isCharCurrent) {
-    console.log('Checkcorrect');
     if(!this.isCurrentWord) {
       return;
     }
@@ -15,7 +14,6 @@ var WordCollection = Backbone.Collection.extend({
       return;
     }
     if(this.every(correct)){
-      console.log('correct');
       this.trigger('correct', this);
     }
 
@@ -25,7 +23,6 @@ var WordCollection = Backbone.Collection.extend({
   },
   checkIfCurrent: function (firstChar, isCurrentChar) {
     if(this.every(notCurrent) && this.isCurrentWord) {
-      console.log('not current')
       this.trigger('decrementCurrentWord', this);
     }
 

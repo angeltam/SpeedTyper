@@ -141,14 +141,5 @@ setInterval(function () {
 
 /*----------  Routes  ----------*/
 
-// request user data from database
-app.use('/user', handlers.user);
-
-// login user and create session
-app.use('/login', handlers.login);
-
-// register a new user to the databse
-app.use('/register', handlers.register);
-
 // serve passage to the client
 app.use('/text', handlers.text);

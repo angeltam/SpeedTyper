@@ -1,57 +1,5 @@
-var db = require('./config');
 var bodyParser = require('body-parser');
-var User = require('./mongoModels/user');
 var req = require('request');
-
-module.exports.user = function (request, response) {
-  if(request.method==="GET"){
-    console.log("requesting user list:\n");
-    User.find({}, function (err, users) {
-      if (err) {
-        console.log("There was an error querying the database.", err);
-      }
-      console.log('Returning the user list: ', users);
-      response.send(users);
-    });
-  }
-
-};
-
-module.exports.login = function (request, response) {
-  if (request.method === "POST") {
-    var username = request.body.username;
-    var password = request.body.password;
-
-    User.findOne({ username: username })
-      .exec(function(err, user) {
-        if (!user) {
-          response.send('User not found in the database!');
-        } else {
-          User.comparePassword(password, user.password, function(err, match) {
-            if (match) {
-              // utility.createSession(request, response, user);
-              response.send('Your passwords match!  Hooray.');
-            } else {
-              console.log('This is match from the request handler: ', match);
-              response.send('Passwords do not match, you scoundrel!');
-            }
-          });
-        }
-    });
-  }
-};
-
-module.exports.register = function (request, response) {
-  if (request.method === "POST"){
-    var username = request.body.username;
-    var password = request.body.password;
-    console.log('Saving username: "' + username + ' and password: "' + password + '" to the database. ');
-    User.create( {username: username, password: password} , function (err, small) {
-      if (err) return handleError(err);
-    });
-    response.send('User registered.');
-  }
-};
 
 module.exports.text = function (request, response) {
   // Correct errors in API string output before serving back to client
@@ -89,9 +37,6 @@ module.exports.text = function (request, response) {
     data.text = formatString(data.text);
     response.send(data);
   });
-
-
-
 };
 
 

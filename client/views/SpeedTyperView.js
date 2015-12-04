@@ -6,13 +6,13 @@ var SpeedTyperView = Backbone.View.extend({
   
   tagName: "div",
   id: "textContainer",
-  audioSrcs: ['http://www.killerinstinctonline.net/sound/announcer/master.mp3',
-    'http://www.killerinstinctonline.net/sound/announcer/ultra.mp3',
-    'http://www.killerinstinctonline.net/sound/announcer/killer.mp3',
-    'http://www.killerinstinctonline.net/sound/announcer/monster.mp3',
-    'http://www.killerinstinctonline.net/sound/announcer/king.mp3',
-    'http://www.killerinstinctonline.net/sound/announcer/attract/ShowNoMercy.wav'
-    ],
+  // audioSrcs: ['http://www.killerinstinctonline.net/sound/announcer/master.mp3',
+  //   'http://www.killerinstinctonline.net/sound/announcer/ultra.mp3',
+  //   'http://www.killerinstinctonline.net/sound/announcer/killer.mp3',
+  //   'http://www.killerinstinctonline.net/sound/announcer/monster.mp3',
+  //   'http://www.killerinstinctonline.net/sound/announcer/king.mp3',
+  //   'http://www.killerinstinctonline.net/sound/announcer/attract/ShowNoMercy.wav'
+  //   ],
   initialize: function ( params ) {
     this.keyModel = params.keyModel;
     window.animatingScroll = false;
@@ -127,19 +127,18 @@ var SpeedTyperView = Backbone.View.extend({
     this.combo++;
     var that = this;
     $('#warning').removeClass().addClass('hide');
-    if(this.combo > 1 && !this.audioplaying) {
-      this.audioplaying = true;
+    // if(this.combo > 1 && !this.audioplaying) {
+    //   this.audioplaying = true;
 
-      var soundbite = _.sample(this.audioSrcs);
-      var $audio = $('<audio src="' + soundbite + '" autoplay></audio>');
-      $('#appContainer').append($audio);
+    //   var soundbite = _.sample(this.audioSrcs);
+    //   var $audio = $('<audio src="' + soundbite + '" autoplay></audio>');
+    //   $('#appContainer').append($audio);
 
-      var that = this;
-      $audio.on('ended', function (){
-        that.audioplaying = false;
-      });
-    }
-    console.log('next');
+    //   var that = this;
+    //   $audio.on('ended', function (){
+    //     that.audioplaying = false;
+    //   });
+    // }
     this.stopListening();
     this.currentWordIdx++;
     if(this.currentWordIdx === this.words.length) {
@@ -157,7 +156,6 @@ var SpeedTyperView = Backbone.View.extend({
   },
   decrementCurrentWord: function (word) {
     $('#warning').removeClass().addClass('hide');
-    console.log('dec')
     this.stopListening();
 
     this.currentWordIdx = this.currentWordIdx > 0 ? --this.currentWordIdx : this.currentWordIdx;
